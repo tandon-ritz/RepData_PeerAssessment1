@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title></title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<hr>
+
+<p>##About</p>
+
+<hr>
+
+<p>This is the first project for the Reproducible Research course in Coursera&#39;s Data Science track. The purpose of the project was to answer a series of questions using data collected from <a href="https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip">here</a>.</p>
+
+<p>##Synopsis</p>
+
+<hr>
+
+<p>The purpose of this project was to practice:</p>
+
+<ul>
+<li>loading and preprocessing data</li>
+<li>imputing missing values</li>
+<li>interpreting data to answer research questions</li>
+</ul>
+
+<p>##Data</p>
+
+<hr>
+
+<p>The data for this assignment was downloaded from the course web site:</p>
+
+<ul>
+<li>Dataset: [Activity monitoring data [52K]</li>
+</ul>
+
+<p>The variables included in this dataset are:</p>
+
+<ul>
+<li><p><strong>steps</strong>: Number of steps taking in a 5-minute interval (missing values are coded as NA)</p></li>
+<li><p><strong>date</strong>: The date on which the measurement was taken in YYYY-MM-DD format</p></li>
+<li><p><strong>interval</strong>: Identifier for the 5-minute interval in which measurement was taken</p></li>
+</ul>
+
+<p>The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.</p>
+
+<p>##Loading and preprocessing the data</p>
+
+<hr>
+
+<p>Load the data using read.csv</p>
+
+<pre><code class="r">activity&lt;-read.csv(&quot;activity.csv&quot;,sep=&quot;,&quot;,header=TRUE,na.strings=&quot;NA&quot;)
+</code></pre>
+
+<p>##What is mean total number of steps taken per day?</p>
+
+<p>Remove the missing values from the dataset. Store the total number of steps taken by day in data table. Make a histogram of total number of steps by day.</p>
+
+<pre><code class="r">cleanactivity&lt;-activity[complete.cases(activity),]
+library(data.table)
+DT &lt;- data.table(cleanactivity)
+DT&lt;-DT[, sum(steps), by = date]
+hist(DT$V1, main =&quot;Histogram of Steps Per Days&quot;, xlab=&quot;Number of Steps&quot;,ylab=&quot;Number of Days&quot;)
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"> </p>
+
+<p>Report the mean and median of the total number of steps taken per day</p>
+
+<pre><code class="r">meanstepsperday&lt;-mean(DT$V1)
+medianstepsperday&lt;-median(DT$V1)
+</code></pre>
+
+<p>The mean is 10766.19 and the median is 10765</p>
+
+<p>##What is the average daily activity pattern?</p>
+
+<hr>
+
+<ol>
+<li>Make a time series plot (i.e. type = &quot;l&quot;) of the 5-minute interval (x-axis) and the average  number of steps taken, averaged across all days (y-axis)</li>
+</ol>
+
+<pre><code class="r">steps_by_interval &lt;- aggregate(steps ~ interval, activity, mean)
+with(steps_by_interval,plot(steps_by_interval$interval,steps_by_interval$steps,type=&quot;l&quot;,xlab=&quot;Dates ( 5 Minute Interval )&quot;,ylab=&quot;Average Number Of Steps&quot;))
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"> </p>
+
+<ol>
+<li>Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?</li>
+</ol>
+
+<pre><code class="r">max_interval &lt;- steps_by_interval[which.max(steps_by_interval$steps),1]
+</code></pre>
+
+<p>The interval for maximum number of steps is 835</p>
+
+<p>##Imputing missing values</p>
+
+<hr>
+
+<ol>
+<li>Total number of missing values in the dataset (i.e. the total number of rows with NAs)</li>
+</ol>
+
+<pre><code class="r">nrow(activity[!complete.cases(activity),])
+</code></pre>
+
+<pre><code>## [1] 2304
+</code></pre>
+
+<p>Total Number of missing Values is 2304</p>
+
+<ol>
+<li>Missing values are imputed with mean steps of that particular day. If the mean of is NA then 0 is imputed</li>
+</ol>
+
+<p>And</p>
+
+<ol>
+<li>The new dataset is created with missing data filled in</li>
+</ol>
+
+<pre><code class="r">data&lt;-read.csv(&quot;activity.csv&quot;,sep=&quot;,&quot;,header=TRUE,na.strings=&quot;NA&quot;)
+
+# following code will transform the data frame,it updates the steps variable for given observation if it is null with the mean of that particular day. If the mean steps of given day is NA, then it is filled in with 0.  
+mean_steps_by_day &lt;- aggregate(steps ~ date, data, mean)
+data &lt;- transform(data, steps = ifelse(is.na(data$steps), ifelse(is.na(mean_steps_by_day$steps[match(data$date, mean_steps_by_day$date)]),0,mean_steps_by_day$steps[match(data$date, mean_steps_by_day$date)]), data$steps))
+</code></pre>
+
+<ol>
+<li>Histogram of total number of steps taken each day</li>
+</ol>
+
+<pre><code class="r">#datewisesum&lt;-data[,sum(steps), by = date]
+steps_by_day &lt;- aggregate(steps ~ date, data, sum)
+hist(steps_by_day$steps, main =&quot;Histogram of Steps Per Days&quot;, xlab=&quot;Total Steps&quot;,ylab=&quot;Number of Days&quot;)
+abline(v = mean(steps_by_day$steps),col = &quot;royalblue&quot;,lwd = 2)
+abline(v = median(steps_by_day$steps),col = &quot;red&quot;,lwd = 2)
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-8-1.png" alt="plot of chunk unnamed-chunk-8"> </p>
+
+<p>Mean and Median of filled in missing data</p>
+
+<pre><code class="r">filledinmean&lt;-mean(steps_by_day$steps)
+filledinmedian&lt;-median(steps_by_day$steps)
+totaldaylysteps&lt;-sum(aggregate(steps~date,activity,sum)$steps)
+totaldailystepsfilledin&lt;-sum(aggregate(steps~date,data,sum)$steps)
+</code></pre>
+
+<ul>
+<li><p>Mean of missing value filled in data is 9354.23 and median is 10395</p></li>
+<li><p>Difference of mean between data ( missing values not filled) and data ( filled missing values ) is = 10766.19 - 9354.23 = <strong>1411.96</strong></p></li>
+<li><p>Difference of median between data ( missing values not filled) and data ( filled missing values ) is = 10765 - 10395 = <strong>370</strong></p></li>
+<li><p>There is no difference between total number of steps taken after imputing missing data with mean of that particular day. This is confimed by looking at data. There are 8 days which has missing ( NA ). Data is missing for all the intervals of these 8 days. Hence, these are imputed with 0. This is the reason of having no difference. </p></li>
+</ul>
+
+<p>##Are there differences in activity patterns between weekdays and weekends?</p>
+
+<hr>
+
+<p>Following will create a new factor variable in the dataset with two levels - &quot;weekday&quot; and &quot;weekend&quot; indicating whether a given date is a weekday or weekend day.</p>
+
+<pre><code class="r">data$dattype &lt;- ifelse(weekdays(as.Date(data$date)) ==&quot;Saturday&quot; | weekdays(as.Date(data$date)) ==&quot;Sunday&quot;,&quot;weekend&quot;, &quot;weekday&quot;)
+</code></pre>
+
+<p>Following will create panel plot containing a time series plot (i.e. type = &quot;l&quot;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis)</p>
+
+<pre><code class="r">dt &lt;- aggregate(steps ~ interval + dattype, data, mean)
+library(lattice)
+p &lt;- xyplot(dt$steps ~ dt$interval | factor(dt$dattype), xlab=&quot;Interval&quot;,ylab=&quot;Steps&quot;,layout=c(1,2),type=&quot;l&quot;)
+print(p)
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-11-1.png" alt="plot of chunk unnamed-chunk-11"> </p>
+
+</body>
+
+</html>
