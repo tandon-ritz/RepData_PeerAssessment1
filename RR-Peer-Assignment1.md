@@ -8,11 +8,11 @@ output: html_document
 ___________________________________________________________________________________________________
 
 
-##About
+## About
 ___________________________________________________________________________________________________
 This is the first project for the Reproducible Research course in Coursera's Data Science track. The purpose of the project was to answer a series of questions using data collected from [here](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip).
 
-##Synopsis
+## Synopsis
 ___________________________________________________________________________________________________
 The purpose of this project was to practice:
 
@@ -21,7 +21,7 @@ The purpose of this project was to practice:
 * interpreting data to answer research questions
 
 
-##Data
+## Data
 ___________________________________________________________________________________________________
 The data for this assignment was downloaded from the course web site:
 
@@ -38,7 +38,7 @@ The variables included in this dataset are:
 The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.
 
 
-##Loading and preprocessing the data
+## Loading and preprocessing the data
 ___________________________________________________________________________________________________
 
 Load the data using read.csv
@@ -48,7 +48,7 @@ Load the data using read.csv
 activity<-read.csv("activity.csv",sep=",",header=TRUE,na.strings="NA")
 ```
 
-##What is mean total number of steps taken per day?
+## What is mean total number of steps taken per day?
 
 Remove the missing values from the dataset. Store the total number of steps taken by day in data table. Make a histogram of total number of steps by day.
 
@@ -159,7 +159,7 @@ totaldailystepsfilledin<-sum(aggregate(steps~date,data,sum)$steps)
 
 * There is no difference between total number of steps taken after imputing missing data with mean of that particular day. This is confimed by looking at data. There are 8 days which has missing ( NA ). Data is missing for all the intervals of these 8 days. Hence, these are imputed with 0. This is the reason of having no difference. 
 
-##Are there differences in activity patterns between weekdays and weekends?
+## Are there differences in activity patterns between weekdays and weekends?
 _______________________________________________________________________________________________________________________
 
 Following will create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
